@@ -1,0 +1,4 @@
+{"passphraseUri": "https://eth5kf2h3-akv.vault.azure.net/secrets/passphrase-3/31326bc114064c8cab0060008859c975",
+    "enodeUrl": "enode://4069af33806e8260bed8d1c84ae8d203bc7f702ecc3e93f099523d3ec6e91245b0eedc962109157151db8da9bc17e438a787a070041ed21fa4b6b42ae0d9221a@localhost:30303", 
+    "hostname": "ibft-node-3"
+}
