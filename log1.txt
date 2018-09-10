@@ -1,0 +1,70 @@
+etheradmin.js starting parameters
+listenPort: 3000
+consortiumId: 111
+containerName: dontcare
+identityBlobPrefix: passphrase-
+ethRpcPort: 8545
+validatorListBlobName: AddressList.json
+paritySpecBlobName: spec.json
+valSetContractBlobName: SimpleValidatorSet.sol
+adminContractBlobName: AdminValidatorSet.sol
+adminContractABIBlobName: AdminValidatorSet.sol.abi
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3000
+etheradmin.js starting parameters
+listenPort: 3001
+consortiumId: 111
+containerName: dontcare
+identityBlobPrefix: passphrase-
+ethRpcPort: 8545
+validatorListBlobName: AddressList.json
+paritySpecBlobName: spec.json
+valSetContractBlobName: SimpleValidatorSet.sol
+adminContractBlobName: AdminValidatorSet.sol
+adminContractABIBlobName: AdminValidatorSet.sol.abi
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3001
+etheradmin.js starting parameters
+listenPort: 3001
+consortiumId: 111
+containerName: dontcare
+identityBlobPrefix: passphrase-
+ethRpcPort: 8545
+validatorListBlobName: AddressList.json
+paritySpecBlobName: spec.json
+valSetContractBlobName: SimpleValidatorSet.sol
+adminContractBlobName: AdminValidatorSet.sol
+adminContractABIBlobName: AdminValidatorSet.sol.abi
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3001
+etheradmin.js starting parameters
+listenPort: 3001
+consortiumId: 111
+containerName: dontcare
+identityBlobPrefix: passphrase-
+ethRpcPort: 8545
+validatorListBlobName: AddressList.json
+paritySpecBlobName: spec.json
+valSetContractBlobName: SimpleValidatorSet.sol
+adminContractBlobName: AdminValidatorSet.sol
+adminContractABIBlobName: AdminValidatorSet.sol.abi
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3001
+etheradmin.js starting parameters
+listenPort: 3001
+consortiumId: 111
+containerName: dontcare
+identityBlobPrefix: passphrase-
+ethRpcPort: 8545
+validatorListBlobName: AddressList.json
+paritySpecBlobName: spec.json
+valSetContractBlobName: SimpleValidatorSet.sol
+adminContractBlobName: AdminValidatorSet.sol
+adminContractABIBlobName: AdminValidatorSet.sol.abi
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3001

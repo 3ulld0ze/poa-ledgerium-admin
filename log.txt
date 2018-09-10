@@ -1,0 +1,14 @@
+etheradmin.js starting parameters
+listenPort: 3000
+consortiumId: 2017
+containerName: undefined
+identityBlobPrefix: undefined
+ethRpcPort: undefined
+validatorListBlobName: undefined
+paritySpecBlobName: undefined
+valSetContractBlobName: undefined
+adminContractBlobName: undefined
+adminContractABIBlobName: undefined
+Started EtherAdmin website - Ver.##VERSION##
+Start EtherAdmin Site
+Admin webserver listening on port 3000
