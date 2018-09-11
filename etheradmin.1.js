@@ -12,7 +12,7 @@ var appjson = require('./version.json')
 /*
  * Parameters
  */
-var listenPort = process.argv[2] || "3001";
+var listenPort = process.argv[2] || "3002";
 var consortiumId = process.argv[3] || "111";
 process.env['AZURE_STORAGE_ACCOUNT'] = process.argv[4] || "dontcare";
 process.env['AZURE_STORAGE_ACCESS_KEY'] = process.argv[5] || "dontcare";
@@ -236,18 +236,8 @@ function getLeasedBlobList(listBlobs) {
 
 function getAbiDatafromBlob() {
   var abiPromise = new Promise((resolve, reject) => {
-    // Get adminContractABIBlobName
-    blobService.getBlobToText(
-      containerName,
-      adminContractABIBlobName,
-      function (err, blobContent, blob) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(blobContent)
-        }
-      }
-    )
+    var contract = require("../config/AdminValidatorSet.sol.json");
+    resolve(JSON.stringify(contract));
   });
   abiPromise.then(function (contents) {
     abiContent = contents;
@@ -355,51 +345,12 @@ app.get('/networkinfo', function (req, res) {
     .then(function (recentBlock) {
       // Get paritySpecBlobName
       networkInfo.recentBlock = recentBlock;
-      blobService.getBlobToText(
-        containerName,
-        paritySpecBlobName,
-        function (err, blobContent, blob) {
-          if (err) {
-            console.log(err);
-            networkInfo.errorMessage += err + "\n";
-            res.send(JSON.stringify(networkInfo));
-          } else {
-            networkInfo.paritySpec = blobContent;
+      networkInfo.paritySpec = '{ "params": {"networkID":"2017"} }';
 
-            // Get valSetContractBlobName
-            blobService.getBlobToText(
-              containerName,
-              valSetContractBlobName,
-              function (err, blobContent, blob) {
-                if (err) {
-                  console.log(err);
-                  networkInfo.errorMessage += err + "\n";
-                  res.send(JSON.stringify(networkInfo));
-                } else {
-                  networkInfo.valSetContract = blobContent;
-
-                  // Get adminContractBlobName
-                  blobService.getBlobToText(
-                    containerName,
-                    adminContractBlobName,
-                    function (err, blobContent, blob) {
-                      if (err) {
-                        console.log(err);
-                        networkInfo.errorMessage += err + "\n";
-                        res.send(JSON.stringify(networkInfo));
-                      } else {
-                        networkInfo.adminContract = blobContent;
-                        res.send(JSON.stringify(networkInfo));
-                      }
-                    });
-                }
-              });
-          }
-        }).catch(function (error) {
-        console.log(`Error Occurred : ${error}`);
-      });
+      networkInfo.adminContract = fs.readFileSync("../config/AdminValidatorSet.sol")
+      networkInfo.valSetContract = fs.readFileSync("../config/SimpleValidatorSet.sol");
+      res.send(JSON.stringify(networkInfo));
     })
-
 })
 
 // Used for sharing information about the network to joining members
