@@ -1,8 +1,8 @@
-pragma solidity 0.4.21;
+pragma solidity 0.4.24;
 import "./Utils.sol";
 
 // Consortium member that can vote to add/remove new members
-contract Admin {    
+contract Admin {
     uint votesForAdding;
     address[] votesFor;
     mapping(address=>bool) alreadyVotedToAdd;
@@ -13,7 +13,7 @@ contract Admin {
     // Ensures that only the AdminValidatorSet or AdminSet can make changes
     mapping(address=>bool) owners;
 
-    function Admin(address id, address owner) public {
+    constructor(address id, address owner) public {
         owners[msg.sender] = true;
         owners[owner] = true;
         identity = id;
@@ -30,7 +30,7 @@ contract Admin {
         return ++votesForAdding;
     }
 
-    function countOfVotesFor() public callerIsOwner returns (uint) {
+    function countOfVotesFor() public callerIsOwner view returns (uint) {
         return votesForAdding;
     }
 
@@ -42,7 +42,7 @@ contract Admin {
         alreadyVotedToAdd[existingAdmin] = false;
         votesFor = Utils.deleteArrayElement(votesFor, existingAdmin);
         --votesForAdding;
-    } 
+    }
 
     function voteAgainst(address existingAdmin) public callerIsOwner returns (uint) {
         assert(!alreadyVotedToRemove[existingAdmin]);
@@ -51,7 +51,7 @@ contract Admin {
         return ++votesForRemoving;
     }
 
-    function countOfVotesAgainst() public callerIsOwner returns (uint) {
+    function countOfVotesAgainst() public callerIsOwner view returns (uint) {
         return votesForRemoving;
     }
 
@@ -97,8 +97,8 @@ contract AdminSet {
     uint count = 0;
     address owner;
     uint MAXADMINS = 200;
-    
-    function AdminSet() public {
+
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -109,7 +109,7 @@ contract AdminSet {
             staticList[i] = addressList[i];
         }
     }
-    
+
     function isInSet(address adminId) public view callerIsOwner returns (bool) {
         return inSet[adminId];
     }
