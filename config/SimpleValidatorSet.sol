@@ -1,4 +1,4 @@
-pragma solidity 0.4.21;
+pragma solidity 0.4.24;
 
 import "./SafeMath.sol";
 import "./Utils.sol";
@@ -43,33 +43,37 @@ contract SimpleValidatorSet is ValidatorSet {
 
 	// System address, used by the block sealer.
     address constant SYSTEM_ADDRESS = 0xffffFFFfFFffffffffffffffFfFFFfffFFFfFFfE;
-    
+
     // To be replaced prior to compilation
-    address[] bootstrapValidatorAddresses = [address(0x00e89a7705ffc91a7f0de9f3d830d1fbde3f5002), address(0x004e3bbe417b9998fa3067d6910106cf05dcaeb5), address(0x00a67cc5f959ec35d78d72149a3078acb22a4c09), address(0x00434733026ad973b1c4db20d28cfc6dc0bba91f)];
-    address[] testValidatorAddresses = [address(0x00933b6FF79899F3B5B56E28725bbEB5be8f43e1), address(0x007a5dc2a434dF5e7f3F40af424F7Ba521b294b7), address(0x627306090abaB3A6e1400e9345bC60c78a8BEf57)];
+    //address[] bootstrapValidatorAddresses = [address(0x00e89a7705ffc91a7f0de9f3d830d1fbde3f5002), address(0x004e3bbe417b9998fa3067d6910106cf05dcaeb5), address(0x00a67cc5f959ec35d78d72149a3078acb22a4c09), address(0x00434733026ad973b1c4db20d28cfc6dc0bba91f)];
+    address[] bootstrapValidatorAddresses = [address(0x00F470991c8b0EBFd39882C361f7f240c362Ef65), address(0x696b1f3cae51FF28073798df33A045536597BBE9), address(0x7023f99F41139617Fb4c752d2585a06158112675), address(0x1D18ff4aDbd67cBBb836245909ea7182012E4bD7)];
+
+    //address[] testValidatorAddresses = [address(0x00933b6FF79899F3B5B56E28725bbEB5be8f43e1), address(0x007a5dc2a434dF5e7f3F40af424F7Ba521b294b7), address(0x627306090abaB3A6e1400e9345bC60c78a8BEf57)];
     // Not used for the simple validator
     address bootstrapAdminAddress = address(0xd34fC4abe46BfDb1939e00b3dcd5B27911a6C05d);
 
     address[] validatorAddresses;
-    mapping (address => address[]) AdminToValidators;
-    address[] pendingValidatorAddresses;
     mapping (address => bool) isValidator;
+    address[] pendingValidatorAddresses;
+
+    mapping (address => address[]) AdminToValidators;
+
     ChangeRequest latestChange;
     bool appliedLastChange;
     bool testHooksEnabled = false;
-    address internal TRUFFLEADDRESS = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
-    
-    function SimpleValidatorSet () public {
+    address internal TRUFFLEADDRESS = 0xd34fC4abe46BfDb1939e00b3dcd5B27911a6C05d;//0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
+
+    constructor () public {
         // Truffle dev account
 	    // testHooksEnabled allows us to call finalize from non-system account
         if (msg.sender == TRUFFLEADDRESS) {
             testHooksEnabled = true;
-            bootstrapValidatorAddresses = testValidatorAddresses;
+            //bootstrapValidatorAddresses = testValidatorAddresses;
             bootstrapAdminAddress = TRUFFLEADDRESS;
         }
         // Add bootstrap addresses to the validator list
         addValidatorsInternal(bootstrapValidatorAddresses, bootstrapAdminAddress, true);
-	
+
         appliedLastChange = true;
     }
 
@@ -100,7 +104,7 @@ contract SimpleValidatorSet is ValidatorSet {
                 AdminToValidators[latestChange.adminOwner] = Utils.deleteArrayElement(AdminToValidators[latestChange.adminOwner], latestChange.identities[j]);
             }
         } else {
-            // Not supported 
+            // Not supported
             revert();
         }
         appliedLastChange = true;
@@ -109,7 +113,7 @@ contract SimpleValidatorSet is ValidatorSet {
 
     // Add validator to pending list
     // If the validator list is updated as part of the contract constructor, we do not need to call initiateChange
-    function addValidatorsInternal(address[] validatorAddressesToAdd, address adminAddress, bool fromContractConstructor) internal {        
+    function addValidatorsInternal(address[] validatorAddressesToAdd, address adminAddress, bool fromContractConstructor) internal {
         emit AddValidatorCalled(msg.sender);
         for (uint i = 0; i < validatorAddressesToAdd.length; i++) {
             assert(!isValidator[validatorAddressesToAdd[i]]);
@@ -153,7 +157,8 @@ contract SimpleValidatorSet is ValidatorSet {
     // Parity's consensus is heavily tied to this event
     // The list that is announced here is just as important as the getValidators call
     function initiateChange() private {
-        emit InitiateChange(block.blockhash(block.number-1), pendingValidatorAddresses);
+        //emit InitiateChange(block.blockhash(block.number-1), pendingValidatorAddresses);
+        emit InitiateChange(blockhash(block.number-1), pendingValidatorAddresses);
         appliedLastChange = false;
     }
 
@@ -161,7 +166,7 @@ contract SimpleValidatorSet is ValidatorSet {
         require(testHooksEnabled || msg.sender == SYSTEM_ADDRESS);
         _;
     }
-    
+
     modifier lastChangeFinalized() {
         require(appliedLastChange);
         _;
