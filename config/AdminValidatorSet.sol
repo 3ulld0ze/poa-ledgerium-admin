@@ -1,14 +1,14 @@
-pragma solidity 0.4.21;
+pragma solidity 0.4.24;
 import "./SafeMath.sol";
 import "./SimpleValidatorSet.sol";
 import "./Admin.sol";
 
 contract AdminValidatorSet is SimpleValidatorSet {
-    
+
     // Set of objects for O(1) for all operations
     AdminSet admins = new AdminSet();
     AdminSet proposedAdmins = new AdminSet();
-    
+
     mapping (address => string) adminAlias;
 
     // Defines how many validators each admin can run at once
@@ -19,7 +19,7 @@ contract AdminValidatorSet is SimpleValidatorSet {
     event AdminAdded(address admin);
     event AdminRemoved(address admin);
 
-    function AdminValidatorSet() SimpleValidatorSet() public {
+    constructor() SimpleValidatorSet() public {
         // Truffle dev account
 	    // testHooksEnabled allows us to call finalize from non-system account
         if (msg.sender == TRUFFLEADDRESS) {
@@ -57,7 +57,7 @@ contract AdminValidatorSet is SimpleValidatorSet {
         return adminAlias[admin];
     }
 
-    function getValidatorCapacity() public view returns (uint) {
+    function getValidatorCapacity() public pure returns (uint) {
         return validatorCapacity;
     }
 
@@ -85,15 +85,15 @@ contract AdminValidatorSet is SimpleValidatorSet {
         if (admins.getCount() == 0) {
             admins.addAdmin(proposedAdminAddress);
             return;
-        } 
-        // existing admin has proposed to add a new one       
-        require(admins.isInSet(proposedBy)); 
+        }
+        // existing admin has proposed to add a new one
+        require(admins.isInSet(proposedBy));
         proposedAdmins.addAdmin(proposedAdminAddress);
         emit AdminProposed(proposedAdminAddress);
 
         voteFor(proposedAdminAddress);
     }
-    
+
     // Get count for majority vote
     function votesNeededForMajority() private view returns (uint) {
         // > 50% (ex. 11/2 + 1 = 6) (ex. 12/2 +1 = 7)
@@ -114,7 +114,7 @@ contract AdminValidatorSet is SimpleValidatorSet {
             emit AdminAdded(proposedAdminAddress);
         }
     }
-    
+
     // Remove if admin has enough votes against
     function removeAdminIfConditionsMet(address adminAddress, uint votesAgainst) internal {
         require(admins.isInSet(adminAddress));
@@ -161,7 +161,7 @@ contract AdminValidatorSet is SimpleValidatorSet {
         require(proposedAdmins.isInSet(proposedAdminAddress));
         return proposedAdmins.getAdmin(proposedAdminAddress).countOfVotesFor();
     }
-    
+
     // Vote for removing an existing admin
     function voteAgainst(address admin) public callerIsAdmin {
         // can only vote against admins
@@ -170,7 +170,7 @@ contract AdminValidatorSet is SimpleValidatorSet {
         uint votesAgainst = admins.getAdmin(admin).voteAgainst(msg.sender);
         removeAdminIfConditionsMet(admin, votesAgainst);
     }
-    
+
     function countOfVotesAgainst(address admin) public view returns (uint) {
         require(admins.isInSet(admin));
         return admins.getAdmin(admin).countOfVotesAgainst();
